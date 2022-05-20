@@ -7,5 +7,11 @@
         "latex",
         "plaintext",
         "git-commit"
-    ]
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+        "javascript"
+    ],
 }
