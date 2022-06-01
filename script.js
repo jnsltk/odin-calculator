@@ -141,6 +141,11 @@ function clearAll() {
     updateDisplay(0);
 }
 
+function keyPress(e) {
+    const key = document.querySelector(`button[data-key="${e.keyCode}"]`);
+    key.click();
+}
+
 btnNum1.addEventListener('click', btnPress);
 btnNum2.addEventListener('click', btnPress);
 btnNum3.addEventListener('click', btnPress);
@@ -162,3 +167,5 @@ btnEquals.addEventListener('click', calculate);
 btnBackspace.addEventListener('click', deleteLast);
 
 display.value = displayValue;
+
+window.addEventListener('keydown', keyPress);
