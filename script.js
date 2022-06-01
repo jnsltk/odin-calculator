@@ -87,6 +87,8 @@ function decimalBtnPress() {
     refreshDisplay();
 }
 
+/* Since parseInt() parses an integer, it doesn't work with decimals. This function
+does basically the same, but it works with decimals too */
 function convertToNum(string) {
     if (typeof string === 'number') return string;
     if (string.includes('.')) {
@@ -111,12 +113,11 @@ function calculate() {
     const num1 = convertToNum(displayTempValue);
     const num2 = convertToNum(displayValue);
     result = operate(currentOperator, num1, num2);
-    updateDisplay(result);
+    updateDisplay(Math.round(result * 100000000) / 100000000);
 }
 
 /* This function gets called when the user presses an operator button. */
 function operatorBtnPress(e) {
-    // if (displayValue === result) console.log('Hi');
     // Checks if this is the first operation in a row and whether the equal button has been used
     if (displayValue !== result && currentOperator && displayTempValue) {
         calculate();
@@ -129,6 +130,7 @@ function operatorBtnPress(e) {
     updateDisplay(0);
 }
 
+// Not perfect, doesn't work when displayValue is number
 function deleteLast() {
     updateDisplay(displayValue.slice(0, -1));
 }
@@ -138,9 +140,10 @@ function clearAll() {
     currentOperator = '';
     displayTempValue = 0;
     result = 0;
-    updateDisplay(0);
+    updateDisplay('0');
 }
 
+// Not a perfect solution, only works with numpad
 function keyPress(e) {
     const key = document.querySelector(`button[data-key="${e.keyCode}"]`);
     key.click();
@@ -166,6 +169,6 @@ btnClear.addEventListener('click', clearAll);
 btnEquals.addEventListener('click', calculate);
 btnBackspace.addEventListener('click', deleteLast);
 
-display.value = displayValue;
-
 window.addEventListener('keydown', keyPress);
+
+display.value = displayValue;
