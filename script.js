@@ -18,10 +18,10 @@ const btnDivide = document.querySelector('#divide');
 const btnClear = document.querySelector('#clear');
 const btnEquals = document.querySelector('#equals');
 
-let displayValue = '';
+let displayValue = 0;
 let currentOperator = '';
-let displayTempValue = '';
-let result = '';
+let displayTempValue = 0;
+let result = 0;
 
 // Basic calculator functions
 function add(num1, num2) {
@@ -38,8 +38,8 @@ function multiply(num1, num2) {
 
 function divide(num1, num2) {
     if (!num2) {
-        alert('Ye can\'t divide by zero ye eejit');
-        return 'nah';
+        alert('You can\'t divide by zero');
+        return 'error';
     }
     return num1 / num2;
 }
@@ -61,7 +61,7 @@ function operate(operator, num1, num2) {
 }
 
 function refreshDisplay() {
-    display.value = displayValue;
+    display.value = Math.round(displayValue * 100000000) / 100000000;
 }
 
 // This function updates the display to whatever value it gets passed
@@ -73,23 +73,33 @@ function updateDisplay(value) {
 /* This function gets called when the user presses a button,
 checks which button was pressed, and adds that number to displayValue */
 function btnPress(e) {
-    if (displayValue == 0) updateDisplay('');
+    if (!displayValue || displayValue === result) updateDisplay('');
     displayValue += `${e.target.id.slice(-1)}`;
     refreshDisplay();
 }
 
+/* This function gets called when the user presses the equals button, or when pressing
+the operator button and the operation is not the first one. It takes the previous display
+value, the current display value, and the operator, passes them to the operate function,
+and then displays the result */
 function calculate() {
+    if (!currentOperator && !displayTempValue) return;
     const num1 = parseInt(displayTempValue, 10);
     const num2 = parseInt(displayValue, 10);
     result = operate(currentOperator, num1, num2);
     updateDisplay(result);
 }
 
-/* This function gets called when the user presses an operator button. First checks if this is
-the first operation in a row, if it isn't, then it updates the display to the result of the
-last calculation, then checks which operator was pressed, stores that value, checks displayValue
-and stores it, and then clears display. */
+/* This function gets called when the user presses an operator button. */
 function operatorBtnPress(e) {
+    // if (displayValue === result) console.log('Hi');
+    // Checks if this is the first operation in a row and whether the equal button has been used
+    if (displayValue !== result && currentOperator && displayTempValue) {
+        calculate();
+        displayTempValue = result;
+        currentOperator = e.target.id;
+        return;
+    }
     currentOperator = e.target.id;
     displayTempValue = display.value;
     updateDisplay(0);
@@ -99,6 +109,7 @@ function clearAll() {
     displayValue = 0;
     currentOperator = '';
     displayTempValue = 0;
+    result = 0;
     updateDisplay(0);
 }
 
@@ -119,3 +130,5 @@ btnMultiply.addEventListener('click', operatorBtnPress);
 btnDivide.addEventListener('click', operatorBtnPress);
 btnClear.addEventListener('click', clearAll);
 btnEquals.addEventListener('click', calculate);
+
+display.value = displayValue;
