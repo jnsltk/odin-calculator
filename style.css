@@ -46,9 +46,7 @@ body {
 #equals {
     background-color: cornflowerblue;
 }
-#button-0 {
-    grid-column: 1 / span 2;
-}
+
 #backspace {
     grid-row: span 2;
 }

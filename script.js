@@ -10,6 +10,7 @@ const btnNum7 = document.querySelector('#button-7');
 const btnNum8 = document.querySelector('#button-8');
 const btnNum9 = document.querySelector('#button-9');
 const btnNum0 = document.querySelector('#button-0');
+const btnDecimal = document.querySelector('#decimal-point');
 
 const btnAdd = document.querySelector('#add');
 const btnSubtract = document.querySelector('#subtract');
@@ -17,7 +18,7 @@ const btnMultiply = document.querySelector('#multiply');
 const btnDivide = document.querySelector('#divide');
 const btnClear = document.querySelector('#clear');
 const btnEquals = document.querySelector('#equals');
-const backspace = document.querySelector('#backspace');
+const btnBackspace = document.querySelector('#backspace');
 
 let displayValue = 0;
 let currentOperator = '';
@@ -62,7 +63,8 @@ function operate(operator, num1, num2) {
 }
 
 function refreshDisplay() {
-    display.value = Math.round(displayValue * 100000000) / 100000000;
+    display.value = displayValue;
+    // display.value = Math.round(displayValue * 100000000) / 100000000;
 }
 
 // This function updates the display to whatever value it gets passed
@@ -79,14 +81,35 @@ function btnPress(e) {
     refreshDisplay();
 }
 
+function decimalBtnPress() {
+    if (displayValue.includes('.')) return;
+    displayValue += '.';
+    refreshDisplay();
+}
+
+function convertToNum(string) {
+    if (typeof string === 'number') return string;
+    if (string.includes('.')) {
+        const tempArray = string.split('.');
+        const int = parseInt(tempArray[0], 10);
+        let divisor = '1';
+        for (let i = 0; i < tempArray[1].length; i++) {
+            divisor += '0';
+        }
+        const decimal = parseInt(tempArray[1], 10) / parseInt(divisor, 10);
+        return int + decimal;
+    }
+    return parseInt(string, 10);
+}
+
 /* This function gets called when the user presses the equals button, or when pressing
 the operator button and the operation is not the first one. It takes the previous display
 value, the current display value, and the operator, passes them to the operate function,
 and then displays the result */
 function calculate() {
     if (!currentOperator && !displayTempValue) return;
-    const num1 = parseInt(displayTempValue, 10);
-    const num2 = parseInt(displayValue, 10);
+    const num1 = convertToNum(displayTempValue);
+    const num2 = convertToNum(displayValue);
     result = operate(currentOperator, num1, num2);
     updateDisplay(result);
 }
@@ -105,6 +128,7 @@ function operatorBtnPress(e) {
     displayTempValue = display.value;
     updateDisplay(0);
 }
+
 function deleteLast() {
     updateDisplay(displayValue.slice(0, -1));
 }
@@ -127,6 +151,7 @@ btnNum7.addEventListener('click', btnPress);
 btnNum8.addEventListener('click', btnPress);
 btnNum9.addEventListener('click', btnPress);
 btnNum0.addEventListener('click', btnPress);
+btnDecimal.addEventListener('click', decimalBtnPress);
 
 btnAdd.addEventListener('click', operatorBtnPress);
 btnSubtract.addEventListener('click', operatorBtnPress);
@@ -134,6 +159,6 @@ btnMultiply.addEventListener('click', operatorBtnPress);
 btnDivide.addEventListener('click', operatorBtnPress);
 btnClear.addEventListener('click', clearAll);
 btnEquals.addEventListener('click', calculate);
-backspace.addEventListener('click', deleteLast);
+btnBackspace.addEventListener('click', deleteLast);
 
 display.value = displayValue;
