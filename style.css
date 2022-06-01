@@ -19,6 +19,7 @@ body {
 .display #display {
     margin: 0;
     text-align: end;
+    font-size: 24px;
     border: 1px gray solid;
     border-radius: 3px;
     padding: 5px;
