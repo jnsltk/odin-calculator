@@ -12,9 +12,11 @@ body {
 }
 .calculator {
     background-color: white;
-    padding: 10px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
+    border: 1px solid black;
+    border-radius: 5px;
 }
 .display #display {
     margin: 0;
@@ -23,9 +25,9 @@ body {
     border: 1px gray solid;
     border-radius: 3px;
     padding: 5px;
-    width: 204px;
+    width: 258px;
 }
-.buttons {
+/* .buttons {
     display: grid;
     gap: 5px;
     padding-top: 5px;
@@ -33,24 +35,33 @@ body {
     justify-content: center;
     justify-items: start;
     align-content: center;
-}
-.numbers-equals {
+} */
+.buttons {
     display: grid;
     gap: 5px;
-    grid-template-columns: 50px 50px 50px;
+    padding-top: 5px;
+    grid-template-columns: 50px 50px 50px 50px 50px;
     grid-template-rows: 50px 50px 50px 50px;
 }
-.numbers-equals #equals {
+#equals {
     background-color: cornflowerblue;
 }
-.operators {
-    display: grid;
-    gap: 5px;
-    grid-column-start: 2;
-    grid-template-columns: 50px;
-    grid-template-rows: 50px 50px 50px 50px;
+#button-0 {
+    grid-column: 1 / span 2;
+}
+#backspace {
+    grid-row: span 2;
+}
+#equals {
+    grid-row: span 2;
 }
 button {
     border: 1px gray solid;
     border-radius: 3px;
+}
+button:hover {
+    background-color: aliceblue;
+}
+button:active {
+    background-color: darkgray;
 }

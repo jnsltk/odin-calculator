@@ -17,6 +17,7 @@ const btnMultiply = document.querySelector('#multiply');
 const btnDivide = document.querySelector('#divide');
 const btnClear = document.querySelector('#clear');
 const btnEquals = document.querySelector('#equals');
+const backspace = document.querySelector('#backspace');
 
 let displayValue = 0;
 let currentOperator = '';
@@ -104,6 +105,9 @@ function operatorBtnPress(e) {
     displayTempValue = display.value;
     updateDisplay(0);
 }
+function deleteLast() {
+    updateDisplay(displayValue.slice(0, -1));
+}
 
 function clearAll() {
     displayValue = 0;
@@ -130,5 +134,6 @@ btnMultiply.addEventListener('click', operatorBtnPress);
 btnDivide.addEventListener('click', operatorBtnPress);
 btnClear.addEventListener('click', clearAll);
 btnEquals.addEventListener('click', calculate);
+backspace.addEventListener('click', deleteLast);
 
 display.value = displayValue;
